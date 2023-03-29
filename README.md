@@ -131,3 +131,9 @@ terraform init or terraform get
 terraform plan
 terraform apply
 ```
+
+## 権限管理
+### ポリシー
+ポリシーの定義方法は2通り <br>
+1. ポリシードキュメントというJSONファイルを作成 → AWSコンソールで登録するJSONと同じ <br>
+2. aws_iam_policy_documentデータソース
