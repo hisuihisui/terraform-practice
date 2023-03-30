@@ -137,3 +137,9 @@ terraform apply
 ポリシーの定義方法は2通り <br>
 1. ポリシードキュメントというJSONファイルを作成 → AWSコンソールで登録するJSONと同じ <br>
 2. aws_iam_policy_documentデータソース
+
+## ストレージ
+### S3バケットの削除
+S3バケットを削除するには空になっている必要がある <br>
+　→バケットにオブジェクトが残っていると terraform destroy しても削除できない <br>
+　　→ force_destory = true に変更し、applyしたあとdestroyすると削除できる
