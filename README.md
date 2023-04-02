@@ -26,14 +26,23 @@ $ terraform init
 2. 実行計画(これからなにが起きるのか)を出力
 ```
 $ terraform plan
+
+// 一部のみ
+$ terraform plan --target=<リソース名>
 ```
 3. 実行
 ```
 $ terraform apply
+
+// 一部のみ
+$ terraform apply --target=<リソース名>
 ```
 4. リソースの削除
 ```
 $ terraform destroy
+
+// 一部のみ
+$ terraform destroy --target=<リソース名>
 ```
 
 ### コマンド実行時のメッセージ
