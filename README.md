@@ -152,3 +152,8 @@ terraform apply
 S3バケットを削除するには空になっている必要がある <br>
 　→バケットにオブジェクトが残っていると terraform destroy しても削除できない <br>
 　　→ force_destory = true に変更し、applyしたあとdestroyすると削除できる
+
+## ドメイン
+### Route53
+・ドメインの登録はTerraformでは不可 <br>
+　→前提：example.com を登録済み
