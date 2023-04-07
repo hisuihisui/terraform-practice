@@ -157,3 +157,7 @@ S3バケットを削除するには空になっている必要がある <br>
 ### Route53
 ・ドメインの登録はTerraformでは不可 <br>
 　→前提：example.com を登録済み
+
+## データストア
+### スローapply問題
+RDSやElastoCacheのappllyには時間がかかる
