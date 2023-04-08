@@ -161,3 +161,65 @@ S3バケットを削除するには空になっている必要がある <br>
 ## データストア
 ### スローapply問題
 RDSやElastoCacheのappllyには時間がかかる
+
+## Terraform ベストプラクティス
+### 削除操作を抑止する
+削除されると困るリソースに下記を記載 <br>
+　→削除しようとするとエラーになる
+```
+lifecycle {
+  prevent_destroy = true
+}
+```
+※リソース定義全体を削除するとリソースが削除される点に注意
+
+### コードフォーマットをかける
+標準でコードフォーマット機能がある
+```
+$ terraform fmt
+
+// サブディレクトリ含め再帰的にフォーマット
+$ terraform fmt -recursive
+
+// フォーマット済みかチェック
+$ terraform fmt -recursive -check
+ → 未フォーマットのコードがあると、Exit Codeが0以外になる
+```
+
+### バリデーションをかける
+変数に値がセットされていなかったり、構文エラーを教えてくれる
+```
+$ terraform validate
+
+// サブディレクトリ含め再帰的にバリデート
+$ find . -type f -name '*. tf' -exec dirname {} \; | sort -u | xargs -I {} terraform validate {}
+```
+※バリデーション実行前にterraform init が必要
+
+### オートコンプリート（タブ補完）を有効にする
+```
+$ terraform -install-autocomplete
+```
+上記実行後にシェルを再起動
+
+### プラグインキャッシュを有効にする
+プロバイダのバイナリファイルをキャッシュしておく
+```
+1. $ vi ~/.terraformrc
+2. plugin_cache_dir = "$HOME/.terraform.d/plugin-cache"
+3. $ mkdir -p "$HOME/.terraform.d/plugin-cache"
+```
+
+### TFLintで不正なコードを検出する
+planコマンドでエラーにならない不正なコードを検出できる
+```
+// インストール
+$
+$ tflint --version
+
+// 実行
+$ tflint
+
+// --deep でAWS APIを実行した詳細なチェック
+$ tflint --deep --aws-region=ap-northeast-1
+```
