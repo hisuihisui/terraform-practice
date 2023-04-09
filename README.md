@@ -232,3 +232,41 @@ $ terraform console
 
 $ exit
 ```
+
+## tfstateファイルの管理
+### ステートS3バケット
+Terraformで使用するリソースはTerraform外部で管理されるべき <br>
+ →CLIやコンソールで作成してみるなど
+```
+// バケット作成
+$ aws s3 api create-bucket --bucket tfstate-pragmatic-terraform --create-bucket-configuration LocationConstraint=ap-northeast-1
+
+// バージョニング設定
+$ aws s3 api put-bucket-versioning --bucket tfstate-pragmatic-terraform --versioning-configuration Status=Enabled
+
+// 暗号化設定
+$ aws s3 api put-bucket-encryption --bucket tfstate-pragmatic-terraform \
+  --server-side-encryption-configuration '{
+    "Rules": [
+      {
+        "ApplyServerSideEncryptionByDefault": {
+         " SSEAlgorithm": "AES256"
+        }    
+      }
+    ]
+  }'
+
+// ブロックパブリックアクセス
+$ aws s3 api put-public-access-block --bucket tfstate-pragmatic-terraform \
+  --public-access-block-configuration '{
+   "BlockPublicAcls": true,  
+   "IgnorePublicAcls": true,  
+   "BlockPublicPolicy": true,  
+   "RestrictPublicBuckets": true
+  }'
+
+// 動作確認
+terraform init
+```
+### Terraform Cloud
+HashiCorp社のサービスでtfstateファイルの保存やロック、履歴管理が行える
