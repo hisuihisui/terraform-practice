@@ -9,4 +9,5 @@ terraform {
 # 定義や変更したときは terraform init を実行する
 provider "aws" {
   version = "4.60.0"
+  region = "ap-northeast-1"
 }

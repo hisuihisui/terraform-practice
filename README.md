@@ -223,3 +223,12 @@ $ tflint
 // --deep でAWS APIを実行した詳細なチェック
 $ tflint --deep --aws-region=ap-northeast-1
 ```
+
+## 高度な構文
+### 主要な組み込み関数
+```
+// 対話型
+$ terraform console
+
+$ exit
+```
