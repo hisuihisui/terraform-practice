@@ -297,3 +297,67 @@ tfstateファイルのリソースの参照方法
 　　→ 出力値さえ定義すれば、リソースの参照方法は問わない <br>
 　2. 入力値と出力値が明確に定義化され、ドキュメンテーションの面で利便性が高い <br>
 　3. 異なるコードから呼び出せて、一貫性がある
+
+## リファクタリング
+・コード修正だけでなくtfstateファイルの操作を行う <br>
+・使用したコマンドでtfstateファイルが変更されるかを意識する
+
+### tfstateファイルのバックアップ
+tfstateファイルを書き換えるので、バージョニング設定をしておくなど、状態を戻せるようにしておく
+
+### ステートの参照
+```
+// 定義されているリソース一覧を参照
+$ terraform state list
+
+// idからリソースの逆引き
+$ terraform state list -id=<value>
+
+// リソースの詳細を参照
+$ terraform state show <リソース名>
+
+// tfstateファイルを標準出力する
+$ terraform state pull
+```
+
+### ステートの上書き
+・serialの変更が必要
+```
+// tfstateファイルを上書き
+$ terraform state push <ファイル>
+```
+※tfstateファイルを直接書き換えるのはかなりリスクがたかい
+
+### リソースをステート管理外にする
+※実際にリソースが削除されるわけではない
+```
+$ terraform state rm <リソース名>
+```
+
+### リネーム
+```
+// リネーム
+$ terraform state mv <リネーム前リソース名> <リネーム後リソース名>
+
+// モジュールのリネームの場合は
+$ terraform get
+$ terraform plan
+// で差分を確認できる
+```
+
+### tfstateファイル間の移動
+※リスクが高いため、tfstateファイルのバックアップを作成しながら実施すること
+```
+// 特定のリソースをファイルに書き出す
+// 元のtfstateファイルからは削除される
+$ terraform state mv -state-out=<ファイル名> <移動前のリソース名> <移動後のリソース名>
+
+// 移動先のtfstateファイルをコピー
+$ terraform state pull > <ファイル名>
+
+// tfstate間のリソース移動
+$ terraform state mv -state=<移動前のファイル> -state-out=<移動後のファイル> <移動前のリソース名> <移動後のリソース名>
+
+// 移動してきたリソースのプッシュ
+$ terraform state push <pushするtfstateファイル>
+```
